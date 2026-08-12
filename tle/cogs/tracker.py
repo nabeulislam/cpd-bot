@@ -68,9 +68,7 @@ class Tracker(commands.Cog):
 
                 if not subs:
                     continue
-
-                new_subs = [s for s in subs if s.id > last_sub_id and s.verdict in ('OK', 'PARTIAL')]
-                
+                new_subs = [s for s in subs if s.id > last_sub_id and (s.verdict in ('OK', 'PARTIAL') or (s.points is not None and s.points > 0))]                
                 judged_subs = [s for s in subs if s.verdict not in (None, 'TESTING', 'SUBMITTED')]
                 max_sub_id = max((s.id for s in judged_subs), default=last_sub_id)
                 if max_sub_id > last_sub_id:

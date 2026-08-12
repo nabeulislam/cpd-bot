@@ -258,7 +258,7 @@ class Codeforces(commands.Cog):
                     pass
             try:
                 submissions = await cf.user.status(handle=handle)
-                recent_subs = [s for s in submissions if now - s.creationTimeSeconds <= 86400 and s.verdict in ('OK', 'PARTIAL')]
+                recent_subs = [s for s in submissions if now - s.creationTimeSeconds <= 86400 and (s.verdict in ('OK', 'PARTIAL') or (s.points is not None and s.points > 0))]
                 unique_solved = set(s.problem.name for s in recent_subs)
                 if unique_solved:
                     solve_counts.append((len(unique_solved), handle))
