@@ -238,6 +238,52 @@ class Codeforces(commands.Cog):
         pages = [make_page(chunk) for chunk in paginator.chunkify(submissions[:100], 10)]
         paginator.paginate(self.bot, ctx.channel, pages, wait_time=5 * 60, set_pagenum_footers=True)
 
+    @commands.command(brief='Leaderboard of problems solved in the last 24 hours')
+    async def solvecount(self, ctx):
+        """Shows a leaderboard of problems solved in the last 24 hours by all active members in the server."""
+        handles = cf_common.user_db.get_handles_for_guild(ctx.guild.id)
+        if not handles:
+            raise CodeforcesCogError('No handles found for this server')
+            
+        progress_msg = await ctx.send(f'Fetching data for {len(handles)} users, this will take approximately {len(handles)} seconds...')
+        
+        solve_counts = []
+        now = time.time()
+        
+        for i, (member_id, handle) in enumerate(handles):
+            if i > 0 and i % 10 == 0:
+                try:
+                    await progress_msg.edit(content=f'Fetching data for {len(handles)} users... ({i}/{len(handles)})')
+                except Exception:
+                    pass
+            try:
+                submissions = await cf.user.status(handle=handle)
+                recent_subs = [s for s in submissions if now - s.creationTimeSeconds <= 86400 and s.verdict in ('OK', 'PARTIAL')]
+                unique_solved = set(s.problem.name for s in recent_subs)
+                if unique_solved:
+                    solve_counts.append((len(unique_solved), handle))
+            except Exception as e:
+                self.logger.warning(f'Failed to fetch status for {handle}: {e}')
+                
+        solve_counts.sort(reverse=True, key=lambda x: x[0])
+        
+        embed = discord_common.cf_color_embed(title='24 Hour Solve Leaderboard')
+        
+        if not solve_counts:
+            embed.description = "No problems solved in the last 24 hours."
+        else:
+            desc = []
+            for idx, (count, handle) in enumerate(solve_counts, 1):
+                desc.append(f'`{idx}.` `{handle}` : {count}')
+            
+            if len(desc) > 50:
+                desc = desc[:50]
+                desc.append("...")
+                
+            embed.description = '\n'.join(desc)
+            
+        await progress_msg.edit(content=None, embed=embed)
+
     @commands.command(brief='Create a mashup', usage='[handles] [+tag..] [~tag..] [+divX] [~divX] [?[-]delta]')
     async def mashup(self, ctx, *args):
         """Create a mashup contest using problems within -200 and +400 of average rating of handles provided.
