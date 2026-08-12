@@ -7,6 +7,8 @@ services:
     build: .
     # Load environment variables from the .env file (e.g. BOT_TOKEN, LOGGING_COG_CHANNEL_ID)
     env_file: .env
+    environment:
+      - TZ=Asia/Dhaka
     # Restart policy: automatically restart unless the container was explicitly stopped
     restart: unless-stopped
     # Map data and logs directories to persist them outside the container

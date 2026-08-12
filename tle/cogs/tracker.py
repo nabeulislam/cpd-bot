@@ -71,8 +71,8 @@ class Tracker(commands.Cog):
 
                 new_subs = [s for s in subs if s.id > last_sub_id and s.verdict == 'OK']
                 
-                # Update last_sub_id first to avoid duplicates on error
-                max_sub_id = max((s.id for s in subs), default=last_sub_id)
+                judged_subs = [s for s in subs if s.verdict is not None]
+                max_sub_id = max((s.id for s in judged_subs), default=last_sub_id)
                 if max_sub_id > last_sub_id:
                     cf_common.user_db.set_tracker_last_sub(handle, max_sub_id)
                 
