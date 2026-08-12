@@ -24,7 +24,7 @@ if [ "$LOCAL" != "$REMOTE" ]; then
     
     echo "[$(date)] Rebuilding and restarting the bot..."
     # Rebuild and restart the docker container
-    sudo docker-compose up -d --build
+    sudo docker compose up -d --build
     
     echo "[$(date)] Update complete!"
 else
