@@ -28,6 +28,12 @@ fi
 echo ""
 echo "Fixing permissions for Docker volumes..."
 mkdir -p data logs
+
+# If Docker previously accidentally created config.json as a directory, remove it
+if [ -d config.json ]; then
+    sudo rm -rf config.json
+fi
+
 if [ ! -f config.json ]; then
     cp config.json.example config.json
 fi
