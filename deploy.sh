@@ -26,6 +26,16 @@ else
 fi
 
 echo ""
+echo "Fixing permissions for Docker volumes..."
+mkdir -p data logs
+if [ ! -f config.json ]; then
+    cp config.json.example config.json
+fi
+# The 'tle' user inside the Docker container has UID 1000
+sudo chown -R 1000:1000 data logs config.json
+sudo chmod -R 775 data logs
+
+echo ""
 echo "Building and starting the bot..."
 # Make sure the container restarts automatically if the server reboots
 sudo docker compose up -d --build
