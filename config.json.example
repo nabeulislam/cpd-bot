@@ -1,0 +1,12 @@
+{
+  "bot_prefix": ";",
+  "custom_welcome_message": "",
+  "admin_role": "Admin",
+  "moderator_role": "Moderator",
+  "auto_cache_problemsets": true,
+  "rating_roles_enabled": true,
+  "starboard_enabled": true,
+  "duel_enabled": true,
+  "training_enabled": true,
+  "lockout_enabled": true
+}

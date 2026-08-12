@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  tle-bot:
+    container_name: tle-bot
+    # Build from the current directory using the Dockerfile
+    build: .
+    # Load environment variables from the .env file (e.g. BOT_TOKEN, LOGGING_COG_CHANNEL_ID)
+    env_file: .env
+    # Restart policy: automatically restart unless the container was explicitly stopped
+    restart: unless-stopped
+    # Map data and logs directories to persist them outside the container
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./config.json:/app/config.json
+    # Apply resource limits to ensure the bot doesn't consume excessive host resources
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
