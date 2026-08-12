@@ -92,7 +92,10 @@ class Tracker(commands.Cog):
                     embed = discord.Embed(color=0x5865F2) # Match Discord default app color
                     embed.set_author(name=handle, icon_url=icon_url)
                     
-                    prob_link = f'https://codeforces.com/contest/{prob.contestId}/problem/{prob.index}'
+                    if prob.contestId and prob.contestId >= 100000:
+                        prob_link = f'https://codeforces.com/gym/{prob.contestId}/problem/{prob.index}'
+                    else:
+                        prob_link = f'https://codeforces.com/contest/{prob.contestId}/problem/{prob.index}'
                     embed.add_field(name='Solved', value=f'[# {prob.name}]({prob_link})', inline=True)
                     embed.add_field(name='Rating', value=str(prob.rating) if prob.rating else 'Unrated', inline=True)
                     
