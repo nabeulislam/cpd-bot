@@ -1326,7 +1326,7 @@ class UserDbConn:
     def get_tracker_channels(self):
         query = 'SELECT guild_id, channel_id FROM tracker_channel'
         res = self.conn.execute(query).fetchall()
-        return [(int(row.guild_id), int(row.channel_id)) for row in res]
+        return [(int(row[0]), int(row[1])) for row in res]
 
     def clear_tracker_channel(self, guild_id):
         query = 'DELETE FROM tracker_channel WHERE guild_id = ?'
@@ -1336,7 +1336,7 @@ class UserDbConn:
     def get_tracker_last_sub(self, handle):
         query = 'SELECT last_sub_id FROM tracker_last_sub WHERE handle = ?'
         res = self.conn.execute(query, (handle,)).fetchone()
-        return res.last_sub_id if res else 0
+        return res[0] if res else 0
 
     def set_tracker_last_sub(self, handle, last_sub_id):
         query = '''
