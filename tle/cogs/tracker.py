@@ -96,10 +96,15 @@ class Tracker(commands.Cog):
                         prob_link = f'https://codeforces.com/gym/{prob.contestId}/problem/{prob.index}'
                     else:
                         prob_link = f'https://codeforces.com/contest/{prob.contestId}/problem/{prob.index}'
-                    embed.add_field(name='Solved', value=f'[# {prob.name}]({prob_link})', inline=True)
-                    embed.add_field(name='Rating', value=str(prob.rating) if prob.rating else 'Unrated', inline=True)
+                        
+                    name = prob.name
+                    if sub.points is not None:
+                        name += f' ({sub.points} points)'
+                        
+                    embed.add_field(name='Solved', value=f'[# {name}]({prob_link})', inline=True)
+                    embed.add_field(name='Rating', value=str(prob.rating) if prob.rating else 'XXXX', inline=True)
                     
-                    tags = "|| " + ", ".join(prob.tags) + " ||" if prob.tags else "|| None ||"
+                    tags = "|| " + ", ".join(prob.tags) + " ||" if prob.tags else "None"
                     embed.add_field(name='Tags', value=tags, inline=True)
                     
                     embed.set_footer(text=datetime.now().strftime("%m/%d/%y, %I:%M %p"))

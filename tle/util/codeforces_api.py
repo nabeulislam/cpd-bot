@@ -228,6 +228,8 @@ class Submission(NamedTuple):
     verdict: Optional[str]
     creationTimeSeconds: int
     relativeTimeSeconds: int
+    passedTestCount: Optional[int] = None
+    points: Optional[float] = None
 
 class RanklistRow(NamedTuple):
     """Codeforces ranklist row."""
