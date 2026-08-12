@@ -38,7 +38,7 @@ class Tracker(commands.Cog):
         cf_common.user_db.clear_tracker_channel(ctx.guild.id)
         await ctx.send(embed=discord_common.embed_success('Tracker channel removed'))
 
-    @tasks.loop(minutes=10)
+    @tasks.loop(minutes=1)
     async def track_solves(self):
         try:
             tracker_channels = cf_common.user_db.get_tracker_channels()
